@@ -5,41 +5,113 @@
     <meta charset="UTF-8">
     <title>index.html</title>
     <style>
+        body {
+            font-family: sans-serif;
+            
+        }
+        
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
         #navbar {
-            height: 70px;
-            background-image: url(img/header.jpg);
+            height: 21px;
             color: white;
             padding: 10px;
-            position: relative
+            position: relative;
+            border-bottom: solid 1px grey;
+        }
+        
+        header {
+            background-image: url(img/header.jpg);
+            background-size: cover;
         }
         
         #navbar h1 {
             display: inline-block;
+            font-size: 16px;
+        }
+        
+        #navbar ul {
+            font-size: 12px;
+        }
+        
+        .title {
+            font-size: 36px;
+            color: white;
+            margin-bottom: 5px;
+            font-weight: 600;
         }
         
         ul {
             list-style: none;
             display: inline-block;
             position: absolute;
-            right: 20px
+            right: 20px;
         }
         
         ul li {
-            display: inline-block
+            display: inline-block;
+        }
+        
+        #banner {
+            height: 400px;
+            text-align: center;
+            padding-top: 80px;
+        }
+        
+        .subtitle {
+            color: white;
+            margin-top: 15px;
+            width: 80%;
+            margin: 15px auto;
+        }
+        
+        button {
+            display: inline-block;
+            width: 120px;
+            height: 30px;
+            font-size: 10px;
+            background-color: #f74120;
+            border: none;
+            color: white;
+            border-radius: 15px;
+            margin-top: 60px;
+        }
+        
+        hr {
+            width: 60px;
+            display: inline-block;
+            border: none;
+            height: 2px;
+            background-color: #f74120;
         }
     </style>
 </head>
 
 <body>
-    <div id="navbar">
-        <h1>START BOOTSTRAP</h1>
-        <ul>
-            <li>ABOUT</li>
-            <li>SERVICES</li>
-            <li>PORTFOlIO</li>
-            <li>CONTACT</li>
-        </ul>
-    </div>
+    <header>
+        <div id="navbar">
+            <h1>START BOOTSTRAP</h1>
+            <ul>
+                <li>ABOUT</li>
+                <li>SERVICES</li>
+                <li>PORTFOlIO</li>
+                <li>CONTACT</li>
+            </ul>
+        </div>
+
+        <div id='banner'>
+            <div class="title">YOUR FAVORITE SOURCE OF FREE BOOTSTRAP THEMES</div>
+            <hr>
+            <div class="subtitle">
+                Hey you look at this super dope website
+            </div>
+            <button>BUTTON</button>
+        </div>
+
+    </header>
 </body>
 
 </html>
