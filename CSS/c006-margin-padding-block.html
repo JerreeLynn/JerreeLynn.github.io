@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+        div {
+            height: 100px;
+            background-color: tomato
+        }
+        
+        .block {
+            margin: 50px 50px 50px 50px;
+            padding: 10px 10px 10px 10px;
+        }
+        
+        #inlineblock {
+            q
+            display: inline-block;
+            margin: 50px 50px 50px 50px;
+            background-color: tomato padding: 10px 10px 10px 10px;
+        }
+        #three {
+            display: inline-block;
+            width: 100px;
+            height: 100px
+        }
+
+    </style>
+</head>
+
+<body>
+    <!--   If block has width, margin right has no effect. if it has the default width, then margin right will decrease the width-->
+    <div id="first" class="block">BLOCK</div>
+    <div id="second"></div>
+    <h2>Inline block </h2>
+    <div id="inlineblock"></div>
+    <div id="three"></div>
+    <h2>inline</h2>
+</body>
+
+</html>

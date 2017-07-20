@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        div {
+            border: solid 1px red
+        }
+        span {
+            border: solid 1px red;
+        }
+        
+        #inlineblock {
+            border: solid 1px red;
+            display: inline-block
+        }
+        #none {
+            border: solid;
+            height: 50px;
+            display: none
+        }
+        #hidden{
+            width: 50px;
+            height: 50px;
+            display: hidden
+        }
+    </style>
+</head>
+<body>
+    <h1>Empty Block (No height, but has width)</h1>
+    <div></div>
+    <h1>Empty Inline (Has height, but no width)</h1>
+    <span></span>
+    <h1>Empty Inline Block (Has no height and no width)</h1>
+    <div id="inlineblock"></div>
+    
+    <h1>None display (It doesn't exist. it doesn't take up any space, and you can't see it)</h1>
+    <div id="none">wow</div>
+    <h1>Hidden display (Takes up space, but you can't see it)</h1>
+    <div id="hidden"></div>
+</body>
+</html>
