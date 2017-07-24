@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <style>
+            div {
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(to bottom, red, aqua);
+            border-radius: 60px;
+            animation-name: changecolor;
+            animation-duration: 0.2s;
+            animation-iteration-count: infinite;
+        }
+        
+        @keyframes changecolor {
+            0% {
+                background: linear-gradient(to top, red, aqua)
+            }
+            100% {
+                background: linear-gradient(to bottom, red, aqua)
+            }
+        }
+        
+        div:active {
+            background: linear-gradient(to top, red, aqua)
+        }
+        
+        div:hover {
+            cursor: pointer;
+
+    </style>
+</head>
+
+<body>
+    <div></div>
+</body>
+
+</html>
