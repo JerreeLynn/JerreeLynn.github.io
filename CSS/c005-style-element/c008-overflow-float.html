@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Overflow float</title>
+    <style>
+        #container {
+            background-color: lime;
+            overflow: auto;
+            /*            overflow: hidden; either                 works*/
+        }
+        
+        #left {
+            background-color: red;
+            height: 100px;
+            width: 100px;
+            float: left;
+        }
+        
+        #right {
+            background-color: blue;
+            height: 100px;
+            width: 100px;
+            float: right;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <div id="left"></div>
+        <div id="right"></div>
+    </div>
+</body>
+
+</html>

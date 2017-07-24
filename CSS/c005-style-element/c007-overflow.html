@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Overflow</title>
+    <style>
+        img {
+            /*            height: 200px*/
+        }
+        
+        #container {
+            border: double blue;
+            height: 150px;
+            width: 400px;
+            overflow: hidden;
+            overflow: visible;
+            overflow: scroll;
+            overflow: auto
+        }
+        
+         ::-webkit-scrollbar {
+            width: 10px
+        }
+        
+         ::-webkit-scrollbar-thumb {
+            background: skyblue;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <img src="http://tinyurl.com/ycr5shv7" alt="">
+    </div>
+    <li>By default, overflow is always visible</li>
+    <li>overflow scroll always shows scrollbar</li>
+    <li>Overflow auto shows bar when neccessary</li>
+</body>
+
+</html>
