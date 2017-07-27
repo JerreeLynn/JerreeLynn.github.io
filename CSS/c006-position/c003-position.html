@@ -14,19 +14,43 @@
 		#rel {
 			position: relative;
 			top: 10px;
-			left: 100px;
+			left: 200px;
 		}
 		#abs {
+			position: absolute;
+			right: 1px
+		}
+		.patch {
+			width: 100px;
+			height: 40px;
+			border: solid red;
 			
+		}
+		#fixed {
+			position: fixed;
+			bottom: 0px;
+			right: 10px;
+			background-image: url(/media/Img/pizza.jpg)
 		}
 	</style>
 </head>
 <body>
 	<div class="container">
-		<div class="item" id="rel"></div>
+		<div class="item" id="rel">rel</div>
+		<div class="patch"></div>
 	</div>	
 	<div class="container">
-		<div class="item" id="abs"></div>
-	</div>	
+		<div class="item" id="abs">abs</div>
+	</div>
+	
+	<ul>
+		<li>Absolute is relative to it's container, which has a non-static position.</li>
+		<li>Relative is relative to its original static position.</li>
+		<li>Absolute will free its space, but relative won't.</li>
+		<li></li>
+	<div class="container">
+		<div class="item" id="fixed">fix</div>
+	</div>
+	</ul>	
 </body>
 </html>

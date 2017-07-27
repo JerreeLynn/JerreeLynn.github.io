@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Form</title>
+	<style>
+		* {
+			padding: 0;
+			margin: 0;
+			box-sizing: border-box;
+		}
+		
+		body {
+			padding: 20px;
+			/*			margin: 0;*/
+		}
+		
+		fieldset {
+			padding: 20px;
+		}
+		
+		legend {
+			font-size: 25px
+		}
+		
+		#container {
+			font-size: 20px;
+			width: 515px;
+			/*			margin: auto*/
+		}
+		
+		label {
+			width: 120px;
+			display: inline-block;
+		}
+		
+		.box {
+			height: 30px;
+			width: 300px;
+			margin-bottom: 5px;
+		}
+		
+		textarea {
+			width: 514px;
+			margin-top: 5px;
+		}
+		
+		#submit {
+			margin-left: 415px;
+			height: 40px;
+			width: 100px;
+			border-radius: 10px;
+			background-color: royalblue;
+			color: white;
+			font-size: 16px;
+		}
+	</style>
+</head>
+
+<body>
+	<form id="container">
+		<fieldset>
+			<legend>Payment Information</legend>
+
+			<label>Name</label>
+			<input class="box" type="name" name="name" placeholder="Please enter your full name">
+			<br>
+			<label>Email</label>
+			<input class="box" type="email" name="email" placeholder="Please enter your email">
+			<br>
+			<label>Phone</label>
+			<input class="box" type="tel" pattern="\d{10}" name="tel" placeholder="Please enter your phone number">
+			<br>
+			<label>City</label>
+			<select class="box" name="cityname">
+				<option value="London">London</option>
+				<option value="Hamilton">Hamilton</option>
+				<option value="Toronto">Toronto</option>
+				<option value="Ottawa">Ottawa</option>
+				<option value="Kingston">Kingston</option>
+			</select>
+			<br>
+
+			<label>Payment:</label>
+			<input type="radio" name='payment' value='credit'> Master card
+
+			<input type="radio" name='payment' value='debit'> Visa card
+
+			<input type="radio" name='payment' value='cash'> Paypal
+
+
+		</fieldset>
+		<textarea name="comments" rows="15" cols="70" placeholder="Please leave your comments here"></textarea>
+		<br>
+		<input id="submit" type="submit">
+	</form>
+</body>
+
+</html>
