@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<style>
+ .container { width: 300px; height: 200px; background-color: mediumpurple; position: relative; } .item { position: absolute; width: 150px; height: 100px; background-color: blue; }
+		
+		#stretch {
+			margin: auto;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+		#negative_margin {
+			top: 50%;
+			left: 50%;
+			margin-left: -25%;
+			margin-top: -16%;		
+		}
+		#transform {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%)
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="item" id="stretch"></div>
+	</div>
+	<h1>Stretch</h1>
+	<br><br>
+	<div class="container">
+		<div class="item" id="negative_margin"></div>
+	</div>
+	<h1>Negative margin</h1>
+	<br><br>
+	<div class="container">
+		<div class="item" id="transform"></div>
+	</div>
+	<h1>Transform</h1>
+</body>
+
+</html>

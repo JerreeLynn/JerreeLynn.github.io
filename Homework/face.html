@@ -52,16 +52,16 @@
 		}
 		
 		#mouth {
-			height: 60px;
-			width: 130px;
+			height: 300px;
+			width: 240px;
 			border: solid 10px;
-			border-top: none;
+			border-top-color: transparent;
+			border-left-color: transparent;
+			border-right-color: transparent;
 			border-bottom-color: black;
-			border-right-color: black;
-			border-bottom-left-radius: 600px;
-			border-bottom-right-radius: 600px;
-			top: 230px;
-			left: 125px;
+			border-radius: 50%;
+			top: -30px;
+			left: 71px;
 		}
 		
 		#corner1,
@@ -70,16 +70,16 @@
 			width: 15px;
 			background-color: black;
 			border-radius: 40px;
-			top: 215px;
+			top: 225px;
 		}
 		
 		#corner1 {
-			left: 120px;
+			left: 105px;
 			transform: rotate(60deg);
 		}
 		
 		#corner2 {
-			right: 120px;
+			right: 105px;
 			transform: rotate(120deg);
 		}
 		
@@ -91,7 +91,7 @@
 			border: solid 30px;
 		}
 		
-		.eye2 {
+		.eye2 {	
 			top: 110px;
 			height: 50px;
 			width: 50px;
@@ -172,14 +172,15 @@
 
 <body>
 	<div id="container">
-		<div id="head"></div>
+		<div id="head">
+			
+		</div>
 		<div class="eye" id="i1">
 			<div class="eyeball"></div>
 		</div>
 		<div class="eye" id="i2">
 			<div class="eyeball"></div>
 		</div>
-		<div id="filler"></div>
 		<div id="mouth"></div>
 		<div id="corner1"></div>
 		<div id="corner2"></div>
