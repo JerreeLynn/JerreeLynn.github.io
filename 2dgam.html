@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>rectangle_fill.html</title>
+	<style>
+		body {
+			background-color: dimgray;
+			text-align: center;
+		}
+		
+		canvas {
+			background-color: white;
+		}
+
+	</style>
+</head>
+
+<body>
+	<canvas width=1320 height=640></canvas>
+	<script>
+		canvas = document.querySelector('canvas');
+		c = canvas.getContext('2d');
+
+		alive1 = true; //shows whether or not the balls are alive
+		alive2 = true;
+
+		canw = 1320; //canvas size, should be same as html
+		canh = 640;
+		
+		startx = 1320;
+		starty = 500;
+		startx2 = 0; 
+		starty2 = 500;	
+
+		x = 1320; //starting position of first ball
+		y = 500;
+
+		x2 = 0; //starting position of second ball
+		y2 = 500;
+
+		htwd = 25; //square height/width
+		colour1 = 'red'; //the colour of the first ball
+		colour2 = 'blue'; //the colour of the second ball
+
+		bounce = 100; //smaller numbers are bouncier, numbers <1 bounce more than speed
+
+		xmvsp = 6; //how fast ball accelerates, larger numbers are faster
+		ymvsp = 0;
+
+		xmxsp = 6; //max speed that the balls can go
+		ymxsp = 10000;
+		dcl = 0.5; //deceleration, might be buggy with numbers that dont evenly divide into mvsp small numbers
+
+		vx = 0; //starting speeds
+		vy = 0;
+
+		vx2 = 0;
+		vy2 = 0;
+
+		grvty = 2; //gravity, higher numbers means more gravity
+
+		jumpsp = 30; //how fast you ascend when you jump
+
+		bulspeed = 7; //bullet speed
+		bulrad = 5; //bullet radius
+		bcolour = 'black'; //bullet colour
+		shootCD = 40; //how long between each shot
+
+		buldcl = 0; //bullet deceleration, if 0 no deceleration WIP
+		bulgrvty = 0; //whether or not bullets are affected by gravity WIP
+
+		var rightPressed = false;
+		var leftPressed = false;
+		var upPressed = false;
+		var downPressed = false;
+		var actshootPressed = false;
+		var actjumpPressed = false;
+
+		var right2Pressed = false;
+		var left2Pressed = false;
+		var up2Pressed = false;
+		var down2Pressed = false;
+		var actshoot2Pressed = false;
+		var actjump2Pressed = false;
+		// This here handles key presses
+		function keyDownHandler(event) {
+			if (event.keyCode == 39) {
+				rightPressed = true;
+			} else if (event.keyCode == 37) {
+				leftPressed = true;
+			}
+			if (event.keyCode == 40) {
+				downPressed = true;
+			} else if (event.keyCode == 38) {
+				upPressed = true;
+			}
+			if (event.keyCode == 97) {
+				actshootPressed = true;
+			}
+			if (event.keyCode == 98) {
+				actjumpPressed = true;
+			}
+			///////////////////////////////////////////
+			if (event.keyCode == 68) {
+				right2Pressed = true;
+			} else if (event.keyCode == 65) {
+				left2Pressed = true;
+			}
+			if (event.keyCode == 83) {
+				down2Pressed = true;
+			} else if (event.keyCode == 87) {
+				up2Pressed = true;
+			}
+			if (event.keyCode == 70) {
+				actshoot2Pressed = true;
+			}
+			if (event.keyCode == 71) {
+				actjump2Pressed = true;
+			}
+		}
+
+		function keyUpHandler(event) {
+			if (event.keyCode == 39) {
+				rightPressed = false;
+			} else if (event.keyCode == 37) {
+				leftPressed = false;
+			}
+			if (event.keyCode == 40) {
+				downPressed = false;
+			} else if (event.keyCode == 38) {
+				upPressed = false;
+			}
+			if (event.keyCode == 97) {
+				actshootPressed = false;
+			}
+			if (event.keyCode == 98) {
+				actjumpPressed = false;
+			}
+			/////////////////////////////////////
+			if (event.keyCode == 68) {
+				right2Pressed = false;
+			} else if (event.keyCode == 65) {
+				left2Pressed = false;
+			}
+			if (event.keyCode == 83) {
+				down2Pressed = false;
+			} else if (event.keyCode == 87) {
+				up2Pressed = false;
+			}
+			if (event.keyCode == 70) {
+				actshoot2Pressed = false;
+			}
+			if (event.keyCode == 71) {
+				actjump2Pressed = false;
+			}
+		}
+
+		//This here handles how the ball reacts with the walls (collision and bouncing)
+		function hitBound() {
+			if (x <= 0) {
+				x = 0;
+				vx = Math.floor((vx / bounce) * -1);
+			}
+			if (x >= canw - htwd) {
+				x = canw - htwd;
+				vx = Math.floor((vx / bounce) * -1);
+			}
+			if (y <= 0) {
+				y = 0;
+				vy = Math.floor((vy / bounce) * -1);
+			}
+			if (y >= canh - htwd) {
+				y = canh - htwd;
+				vy = Math.floor((vy / bounce) * -1);
+			}
+
+
+			if (x2 <= 0) {
+				x2 = 0;
+				vx2 = Math.floor((vx2 / bounce) * -1);
+			}
+			if (x2 >= canw - htwd) {
+				x2 = canw - htwd;
+				vx2 = Math.floor((vx2 / bounce) * -1);
+			}
+			if (y2 <= 0) {
+				y2 = 0;
+				vy2 = Math.floor((vy2 / bounce) * -1);
+			}
+			if (y2 >= canh - htwd) {
+				y2 = canh - htwd;
+				vy2 = Math.floor((vy2 / bounce) * -1);
+			}
+		}
+
+		canJump = false;
+		canJump2 = false;
+		walljump = false;
+
+		function jump() {
+			if (actjumpPressed === true) {
+				if (y === canh - htwd) {
+					vy -= jumpsp;
+				}
+			}
+			if (actjump2Pressed === true) {
+				if (y2 === canh - htwd) {
+					vy2 -= jumpsp;
+				}
+			}
+
+		}
+
+		blist = [];
+		bshootCD = 0;
+		canShoot = true;
+		
+		
+		function shoot() {
+			bx = x + htwd / 2;
+			by = y + htwd / 2;
+			bdir = dir;
+			bbulspeed = bulspeed;
+
+			if (bshootCD > 0) {
+				canShoot = false;
+				bshootCD--;
+			}
+			if (bshootCD <= 0) {
+				canShoot = true;
+			}
+			if (actshootPressed === true && canShoot === true) {
+				blist.push([bx, by, bdir, bbulspeed, 1]);
+				bshootCD = shootCD;
+			}
+			bcount = 0;
+			while (bcount < blist.length) {
+
+				//This just makes it a bit easier to read
+				binf = blist[bcount];
+
+				//Some math to see how much the bullet moves diagonally
+				dbulspeed = Math.sqrt((binf[3] * binf[3]) / 2);
+
+
+
+				//This part draws the bullet
+				c.beginPath();
+				c.arc(binf[0], binf[1], bulrad, 0, Math.PI * 2, false);
+				c.strokeStyle = bcolour;
+				c.stroke();
+				c.fillStyle = bcolour;
+				c.fill();
+
+				//this part handles moving the bullet in the correct direction
+				if (binf[2] === 'right') {
+					binf[0] += binf[3];
+
+				} else if (binf[2] === 'left') {
+					binf[0] -= binf[3];
+				} else if (binf[2] === 'up') {
+					binf[1] -= binf[3];
+				} else if (binf[2] === 'down') {
+					binf[1] += binf[3];
+				} else if (binf[2] === 'upright') {
+					binf[1] -= dbulspeed;
+					binf[0] += dbulspeed;
+				} else if (binf[2] === 'upleft') {
+					binf[1] -= dbulspeed;
+					binf[0] -= dbulspeed;
+				} else if (binf[2] === 'downright') {
+					binf[1] += dbulspeed;
+					binf[0] += dbulspeed;
+				} else if (binf[2] === 'downleft') {
+					binf[1] += dbulspeed;
+					binf[0] -= dbulspeed;
+				}
+
+				if ((binf[1] > y2 && binf[1] < y2 + htwd && binf[0] < x2 + htwd && binf[0] > x2) && binf[4] === 1) {
+					alive2 = false;
+					blist.splice(blist.indexOf(binf), 1);
+				}
+				
+
+				//This handles bullet despawning (when it leaves the screen)
+				if (binf[0] < bulrad | binf[0] > canw - bulrad | binf[1] < bulrad | binf[1] > canh) {
+					blist.splice(blist.indexOf(binf), 1);
+				}
+				bcount++;
+			}
+
+		}
+		
+		blist2 = [];
+		canShoot2 = true;
+		bshootCD2 = 0;
+
+		function shoot2() {
+			bx2 = x2 + htwd / 2;
+			by2 = y2 + htwd / 2;
+			bdir2 = dir2;
+			bbulspeed2 = bulspeed;
+
+			if (bshootCD2 > 0) {
+				canShoot2 = false;
+				bshootCD2--;
+			}
+			if (bshootCD2 <= 0) {
+				canShoot2 = true;
+			}
+			if (actshoot2Pressed === true && canShoot2 === true) {
+				blist2.push([bx2, by2, bdir2, bbulspeed2, 2]);
+				bshootCD2 = shootCD;
+			}
+			bcount2 = 0;
+			while (bcount2 < blist2.length) {
+
+				//This just makes it a bit easier to read
+				binf2 = blist2[bcount2];
+
+				//Some math to see how much the bullet moves diagonally
+				dbulspeed2 = Math.sqrt((binf2[3] * binf2[3]) / 2);
+
+
+
+				//This part draws the bullet
+				c.beginPath();
+				c.arc(binf2[0], binf2[1], bulrad, 0, Math.PI * 2, false);
+				c.strokeStyle = bcolour;
+				c.stroke();
+				c.fillStyle = bcolour;
+				c.fill();
+
+				//this part handles moving the bullet in the correct direction
+				if (binf2[2] === 'right') {
+					binf2[0] += binf2[3];
+
+				} else if (binf2[2] === 'left') {
+					binf2[0] -= binf2[3];
+				} else if (binf2[2] === 'up') {
+					binf2[1] -= binf2[3];
+				} else if (binf2[2] === 'down') {
+					binf2[1] += binf2[3];
+				} else if (binf2[2] === 'upright') {
+					binf2[1] -= dbulspeed2;
+					binf2[0] += dbulspeed2;
+				} else if (binf2[2] === 'upleft') {
+					binf2[1] -= dbulspeed2;
+					binf2[0] -= dbulspeed2;
+				} else if (binf2[2] === 'downright') {
+					binf2[1] += dbulspeed2;
+					binf2[0] += dbulspeed2;
+				} else if (binf2[2] === 'downleft') {
+					binf2[1] += dbulspeed2;
+					binf2[0] -= dbulspeed2;
+				}
+
+				if ((binf2[1] > y && binf2[1] < y + htwd && binf2[0] < x + htwd && binf2[0] > x) && binf2[4] === 2) {
+					alive1 = false;
+					blist2.splice(blist2.indexOf(binf2), 1);
+				}
+				
+
+				//This handles bullet despawning (when it leaves the screen)
+				if (binf2[0] < bulrad | binf2[0] > canw - bulrad | binf2[1] < bulrad | binf2[1] > canh) {
+					blist2.splice(blist2.indexOf(binf2), 1);
+				}
+				bcount2++;
+			}
+		}
+		dir = 'right'; //starting facing direction
+		dir2 = 'left';
+		//This handles everything to do with the speed of the ball, and the controls kinda
+		function speed() {
+			//This part handles the button presses adding speeds, and also facing directions for shooting
+
+			if (rightPressed === true) {
+				vx += xmvsp;
+				dir = 'right';
+			}
+			if (leftPressed === true) {
+				vx -= xmvsp;
+				dir = 'left';
+			}
+			if (upPressed === true) {
+				dir = 'up';
+			}
+			if (downPressed === true) {
+				vy += ymvsp;
+				dir = 'down';
+			}
+			if (rightPressed === true && upPressed === true) {
+				dir = 'upright';
+			}
+			if (leftPressed === true && upPressed === true) {
+				dir = 'upleft';
+			}
+			if (leftPressed === true && downPressed === true) {
+				dir = 'downleft';
+			}
+			if (rightPressed === true && downPressed === true) {
+				dir = 'downright';
+			}
+
+			//////////////////////////////////////////////
+			if (right2Pressed === true) {
+				vx2 += xmvsp;
+				dir2 = 'right';
+			}
+			if (left2Pressed === true) {
+				vx2 -= xmvsp;
+				dir2 = 'left';
+			}
+			if (up2Pressed === true) {
+				dir2 = 'up';
+			}
+			if (down2Pressed === true) {
+				vy2 += ymvsp;
+				dir2 = 'down';
+			}
+			if (right2Pressed === true && up2Pressed === true) {
+				dir2 = 'upright';
+			}
+			if (left2Pressed === true && up2Pressed === true) {
+				dir2 = 'upleft';
+			}
+			if (left2Pressed === true && down2Pressed === true) {
+				dir2 = 'downleft';
+			}
+			if (right2Pressed === true && down2Pressed === true) {
+				dir2 = 'downright';
+			}
+
+
+			//This part handles how the balls decelerates 
+			if (vx > 0) {
+				vx -= dcl;
+			} else if (vx < 0) {
+				vx += dcl;
+			}
+			if (vy > 0) {
+				vy -= dcl;
+			} else if (vy < 0) {
+				vy += dcl;
+			}
+
+			if (vx2 > 0) {
+				vx2 -= dcl;
+			} else if (vx2 < 0) {
+				vx2 += dcl;
+			}
+			if (vy2 > 0) {
+				vy2 -= dcl;
+			} else if (vy2 < 0) {
+				vy2 += dcl;
+			}
+
+			//This part handles the handles the max speed of the ball
+			if (vx >= xmxsp) {
+				vx = xmxsp;
+			}
+			if (vx <= xmxsp * -1) {
+				vx = xmxsp * -1;
+			}
+			if (vy >= ymxsp) {
+				vy = ymxsp;
+			}
+			if (vy <= ymxsp * -1) {
+				vy = ymxsp * -1;
+			}
+
+			if (vx2 >= xmxsp) {
+				vx2 = xmxsp;
+			}
+			if (vx2 <= xmxsp * -1) {
+				vx2 = xmxsp * -1;
+			}
+			if (vy2 >= ymxsp) {
+				vy2 = ymxsp;
+			}
+			if (vy2 <= ymxsp * -1) {
+				vy2 = ymxsp * -1;
+			}
+
+			//This is gravity
+			vy += grvty;
+			vy2 += grvty;
+
+
+		}
+
+		alertbool = false;
+		function createBall() {
+			
+			if (alive1 === true) {
+				c.beginPath();
+				c.rect(x, y, htwd, htwd);
+				c.strokeStyle = colour1;
+				c.stroke();
+				c.fillStyle = colour1;
+				c.fill();
+			} 
+			if (alive2 === true) {
+				c.beginPath();
+				c.rect(x2, y2, htwd, htwd);
+				c.strokeStyle = colour2;
+				c.stroke();
+				c.fillStyle = colour2;
+				c.fill();
+			} 
+			if (alive1 === false && alive2 ===false ) {
+				x = 9999;
+				y = 9999;
+				x2 = 9999;
+				y2 = 9999;
+				c.beginPath();
+				c.fillStyle = 'dimgray';
+				c.font = '100px Arial';
+				c.fillText('It\'s a tie!', 500, 100);
+			}
+			else if (alive1 === false) {
+				x = 9999;
+				y = 9999;
+				c.beginPath();
+				c.fillStyle = 'blue';
+				c.font = '100px Arial';
+				c.fillText('Blue Wins!', 0, 100);
+			}
+			else if (alive2 === false) {
+				x2 = 9999;
+				y2 = 9999;
+				c.beginPath();
+				c.fillStyle = 'red';
+				c.font = '100px Arial';
+				c.fillText('Red Wins!', 850, 100);
+			}
+		}
+
+
+
+		function playGame() {
+			requestAnimationFrame(playGame);
+			c.clearRect(0, 0, canw, canh);
+			createBall();
+			c.fill();
+			document.addEventListener('keydown', keyDownHandler, false);
+			document.addEventListener('keyup', keyUpHandler, false);
+			speed();
+			jump();
+			shoot();
+			shoot2();
+			x += vx;
+			y += vy;
+			x2 += vx2;
+			y2 += vy2;
+			hitBound();
+//			console.log(shootCD);
+//			console.log(vx+','+vy);
+//			console.log(x2, y2)
+//			console.log(vx2+','+vy2)
+//			console.log(blist);
+//			console.log(dir);
+//			console.log(canJump, canJump2)
+		}
+		playGame();
+
+	</script>
+</body>
+
+</html>

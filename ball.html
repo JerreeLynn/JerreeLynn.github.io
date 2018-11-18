@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>rectangle_fill.html</title>
+	<style>
+	body {
+	background-color: dimgray;
+	text-align: center;
+	}
+	canvas {
+		background-color: white;
+	}
+	</style>
+</head>
+<body>
+	<audio id='sound' src="audio/zapsplat_sound_design_hit_impact_thud_thin_reverb_18619.mp3"></audio>
+	<canvas width=1320 height=640></canvas>
+	<script>
+	    canvas = document.querySelector('canvas');
+	    c = canvas.getContext('2d');
+		
+		canw=1320;		//canvas size, should be same as html
+		canh=640;
+		
+	    x=660; 			//starting position
+		y=320;
+		ballrad=15;		//ball radius/size
+		colour='blue'	//the colour idiot
+		
+		bounce=1		//smaller numbers are bouncier, numbers <1 bounce more than speed
+					
+		xmvsp=3			//how fast ball accelerates, larger numbers are faster
+		ymvsp=3
+		
+		xmxsp=2500		//max speed that the ball can go
+		ymxsp=2500
+		dcl=0.5			//decelleration, cannot be more than half of mvsp or will be buggy
+		
+		vx=0			//starting speeds
+		vy=0
+		
+		grvty=0			//gravity, higher numbers means more gravity
+		
+		
+		// This here handles key presses
+		function keyDownHandler(event) {
+			if(event.keyCode == 39) {
+				rightPressed = true;
+			}
+			else if(event.keyCode == 37) {
+				leftPressed = true;
+			}
+			if(event.keyCode == 40) {
+				downPressed = true;
+			}
+			else if(event.keyCode == 38) {
+				upPressed = true;
+			}
+		}
+		function keyUpHandler(event) {
+			if(event.keyCode == 39) {
+				rightPressed = false;
+			}
+			else if(event.keyCode == 37) {
+				leftPressed = false;
+			}
+			if(event.keyCode == 40) {
+				downPressed = false;
+			}
+			else if(event.keyCode == 38) {
+				upPressed = false;
+			}
+		}
+		
+		//This here handles how the ball reacts with the walls (collision and bouncing)
+		function hitBound() {
+			if (x<=ballrad) {
+				x=ballrad
+				vx=Math.floor((vx/bounce)*-1)
+				sound.load();
+				sound.play();
+			}
+			if (x>=canw-ballrad) {
+				x=canw-ballrad;
+				vx=Math.floor((vx/bounce)*-1);
+				sound.load();
+				sound.play();
+			}
+			if (y<=ballrad) {
+				y=ballrad
+				vy=Math.floor((vy/bounce)*-1)
+				sound.load()
+				sound.play()
+			}
+			if (y>=canh-ballrad) {
+				y=canh-ballrad
+				vy=Math.floor((vy/bounce)*-1)
+				sound.load()
+				sound.play()
+			}
+		}
+
+		//This handles everything to do with the speed of the ball
+		function speed() {
+			//This part handles the button presses adding speeds
+			if (rightPressed===true) {
+				vx+=xmvsp
+			}
+			if (leftPressed===true) {
+				vx-=xmvsp
+			}
+			if (upPressed===true) {
+				vy-=ymvsp
+			}
+			if (downPressed===true) {
+				vy+=ymvsp
+			}
+			
+			//This part handles how the balls decelerates 
+			if (vx>0) {
+				vx-=dcl
+			}
+			else if (vx<0) {
+				vx+=dcl
+			}
+			if (vy>0) {
+				vy-=dcl
+			}
+			else if (vy<0) {
+				vy+=dcl
+			}
+			
+			//This part handles the handles the max speed of the ball
+			if (vx>=xmxsp) {
+				vx=xmxsp
+			}
+			if (vx<=xmxsp*-1) {
+				vx=xmxsp*-1
+			}
+			if (vy>=ymxsp) {
+				vy=ymxsp
+			}
+			if (vy<=ymxsp*-1) {
+				vy=ymxsp*-1
+			}
+			
+			//This is gravity
+			vy+=grvty
+			
+		}
+		var rightPressed = false;
+		var leftPressed = false;
+		var upPressed = false;
+		var downPressed = false;
+		function moveBall() {
+			requestAnimationFrame(moveBall);
+			c.clearRect(0,0,canw,canh);
+			c.beginPath();
+			c.arc(x,y,ballrad,0,Math.PI*2,false);
+			c.strokeStyle=colour;
+			c.stroke();
+			c.fillStyle=colour;
+			c.fill();
+			document.addEventListener('keydown', keyDownHandler, false);
+			document.addEventListener('keyup', keyUpHandler, false);
+			speed();
+			x+=vx;
+			y+=vy;
+			hitBound();
+			console.log(vy+','+vx)
+
+		}
+		moveBall();
+	</script>
+</body>
+</html>
